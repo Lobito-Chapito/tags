@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratório de Tags HTML</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#f6f3ee;--sf:rgba(255,255,255,.78);--tx:#1d1b2e;--mu:#6e6a80;--bd:rgba(60,50,110,.14);--ac:#6c4cf1;--ac2:#ff6b4a;--bl:#2a8cff;--sh:0 14px 44px -14px rgba(70,50,160,.3);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0d17;--sf:rgba(28,26,44,.72);--tx:#efedf9;--mu:#9a96b3;--bd:rgba(180,170,255,.16);--ac:#a18bff;--ac2:#ff8f73;--bl:#5fb0ff;--sh:0 14px 44px -14px rgba(0,0,0,.65)}}
+:root[data-theme="dark"]{--bg:#0e0d17;--sf:rgba(28,26,44,.72);--tx:#efedf9;--mu:#9a96b3;--bd:rgba(180,170,255,.16);--ac:#a18bff;--ac2:#ff8f73;--bl:#5fb0ff;--sh:0 14px 44px -14px rgba(0,0,0,.65)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--tx);font:16px/1.5 "Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 8% -8%,color-mix(in srgb,var(--ac) 28%,transparent),transparent 70%),radial-gradient(800px 500px at 100% 0%,color-mix(in srgb,var(--ac2) 24%,transparent),transparent 70%),var(--bg);background-attachment:fixed}
+header{padding:36px 16px 14px;max-width:1200px;margin:0 auto}
+h1{margin:0 0 10px;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:-.035em;line-height:1.05;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h1::before{content:"</> ";font-family:"JetBrains Mono",ui-monospace,monospace}
+header>p{margin:0;max-width:62ch;font-size:1.05rem;color:var(--mu)}
+.bar{height:10px;border-radius:99px;background:color-mix(in srgb,var(--ac) 14%,transparent);margin-top:18px;max-width:420px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .5s}
+#prog{font-weight:500;color:var(--ac)!important}
+.wrap{max-width:1200px;margin:0 auto;padding:8px 16px 32px;display:grid;gap:16px;grid-template-columns:300px 1fr}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}}
+aside,main{background:var(--sf);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:22px;padding:18px;box-shadow:var(--sh)}
+@media(min-width:801px){aside{position:sticky;top:16px;align-self:start}}
+.ctl{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+input[type=search]{flex:1 1 100%;padding:11px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--bg);color:var(--tx);font:inherit}
+input:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 20%,transparent)}
+.f,.chip,.btn{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:5px 12px;font:500 .85rem inherit;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.btn{padding:8px 16px}
+.f:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px -8px var(--ac)}
+.f.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent}
+#nx{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent}
+#list{display:flex;flex-wrap:wrap;gap:7px;padding:2px;max-height:60vh;overflow-y:auto;scrollbar-width:thin}
+@media(max-width:800px){#list{max-height:200px}}
+.chip{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82rem;padding:6px 12px 6px 22px;position:relative}
+.chip::before{content:"";position:absolute;left:9px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--bl)}
+.chip.i::before{background:var(--ac2)}
+.chip:hover{transform:translateY(-2px)}
+.chip.seen{opacity:.75;background:color-mix(in srgb,var(--ac) 10%,var(--bg))}
+.chip.seen::after{content:" ✓"}
+.chip.cur{opacity:1;color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--ac),var(--ac2))}
+.chip.cur::before{background:#fff}
+.tag{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.tag h2{margin:0;font:600 clamp(1.6rem,4vw,2.3rem) "JetBrains Mono",ui-monospace,monospace;letter-spacing:-.03em;color:var(--ac)}
+.badge{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 12px;border-radius:999px;color:#fff}
+.badge.b{background:linear-gradient(135deg,var(--bl),var(--ac))}.badge.i{background:linear-gradient(135deg,var(--ac2),#d9822b)}
+.badge.ob{background:#b3261e}
+.desc{color:var(--mu);margin:0 0 12px;font-size:1.05rem}
+.cols{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+label.t{display:block;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+textarea{width:100%;height:300px;resize:vertical;padding:14px;border:1px solid transparent;border-radius:16px;background:#14131f;color:#e8e6ff;caret-color:#ff8f73;font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace;tab-size:2}
+iframe{width:100%;height:300px;border:none;border-radius:16px;background:#fff;box-shadow:0 0 0 1px var(--bd)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;font-size:.9rem}
+.row label{cursor:pointer}
+.row input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px;vertical-align:-3px}
+.info{margin-top:16px;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.card{padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--ac) 7%,transparent);border:1px solid var(--bd)}
+.card b{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:4px}
+.card span{font-size:.92rem}
+.card code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82rem}
+.note{color:var(--mu);font-size:.85rem;margin-top:12px;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--ac) 8%,transparent);border:1px dashed var(--bd)}
+.note a{color:var(--ac);font-weight:600}
+main{animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){main{animation:none}.chip,.f,.btn,.bar i{transition:none}}
+</style>
+</head>
+<body>
+<header>
+<h1>Laboratório de Tags HTML</h1>
+<p>Todas as tags de bloco e inline da lição “HTML Block and Inline Elements” do W3Schools. Escolhe uma tag, lê o resumo, edita o código e vê o resultado ao vivo.</p>
+<div class="bar"><i id="bar"></i></div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px"><p id="prog" style="font-size:.85rem"></p><button class="btn" id="rp" style="padding:4px 12px;font-size:.8rem">↺ Resetar exploradas</button></div>
+</header>
+<div class="wrap">
+<aside>
+<div class="ctl">
+<input type="search" id="q" placeholder="Procurar tag…" aria-label="Procurar tag">
+<button class="f on" data-k="">Todas</button><button class="f" data-k="b">Bloco</button><button class="f" data-k="i">Inline</button>
+</div>
+<div id="list"></div>
+</aside>
+<main>
+<div class="tag"><h2 id="tn"></h2><span class="badge" id="tb"></span><span class="badge ob" id="to" hidden>Obsoleta</span></div>
+<p class="desc" id="td"></p>
+<div class="cols">
+<div><label class="t" for="ed">Código (edita à vontade)</label><textarea id="ed" spellcheck="false"></textarea></div>
+<div><label class="t">Resultado</label><iframe id="pv" sandbox="allow-scripts" title="Resultado"></iframe></div>
+</div>
+<div class="row">
+<label><input type="checkbox" id="dbg" checked> Mostrar contornos dos elementos</label>
+<button class="btn" id="rs">Repor exemplo</button>
+<button class="btn" id="nx">Tag aleatória</button>
+</div>
+<div class="info" id="inf"></div>
+<p class="note" id="nt"></p>
+</main>
+</div>
+<script>
+var IMG="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27140%27 height=%2770%27%3E%3Crect width=%27140%27 height=%2770%27 rx=%278%27 fill=%27%23d85a30%27/%3E%3Ccircle cx=%2770%27 cy=%2735%27 r=%2722%27 fill=%27%23fff%27/%3E%3C/svg%3E";
+var DL='<dl>\n  <dt>HTML</dt>\n  <dd>Linguagem de marcação da web</dd>\n  <dt>CSS</dt>\n  <dd>Linguagem de estilos</dd>\n</dl>';
+/* [tag, tipo, descrição, código, quando usar, atributos úteis, dica / erro comum] */
+var D=[
+['address','b','Contacto do autor','<address>\n  Escrito por <a href="mailto:ola@exemplo.pt">Ana Silva</a><br>\n  Rua das Flores 10, Porto\n</address>','Contacto de quem escreveu a página ou o artigo.','—','Não serve para qualquer morada; só para o contacto do autor.'],
+['article','b','Conteúdo independente','<article style="border:1px solid #888;padding:10px">\n  <h3>Notícia</h3>\n  <p>Faz sentido sozinho.</p>\n</article>','Conteúdo que faz sentido isolado: notícia, post, comentário, cartão de produto.','—','Costuma levar um título (h2–h6) logo no início.'],
+['aside','b','Conteúdo lateral','<p>Texto principal.</p>\n<aside style="background:#eee;padding:10px">Nota lateral relacionada.</aside>','Barras laterais, caixas de destaque, anúncios, links relacionados.','—','Teste: se o retirares, o conteúdo principal continua a fazer sentido.'],
+['blockquote','b','Citação longa','<blockquote cite="https://exemplo.pt">Uma citação longa, recuada pelo navegador.</blockquote>','Citação extensa de outra fonte.','cite (URL da fonte)','Para citações curtas dentro de uma frase usa q.'],
+['canvas','b','Desenho com JavaScript','<canvas id="c" width="300" height="120" style="border:1px solid #888"></canvas>\n<script>\nvar x=document.getElementById("c").getContext("2d");\nx.fillStyle="tomato";x.fillRect(20,20,120,70);\nx.fillStyle="steelblue";x.beginPath();x.arc(220,55,40,0,7);x.fill();\n<\/script>','Gráficos, jogos, animações e efeitos desenhados por JavaScript.','width, height','Define width e height como atributos; só em CSS a imagem fica esticada.'],
+['dd','b','Descrição numa lista de definições',DL,'A descrição de um termo (dt).','—','Só aparece dentro de dl, depois de um dt.'],
+['div','b','Contentor genérico de bloco','<div style="background:black;color:white;padding:20px">\n  <h2>London</h2>\n  <p>London is the capital city of England.</p>\n</div>','Agrupar elementos para estilizar ou manipular com JavaScript.','class, id, style','Sem significado próprio: usa section, article ou nav quando fizerem sentido.'],
+['dl','b','Lista de definições',DL,'Glossários, pares nome–valor, metadados.','—','Contém grupos de dt + dd; cada termo pode ter várias descrições.'],
+['dt','b','Termo numa lista de definições',DL,'O termo ou nome que a dd descreve.','—','Vem sempre dentro de dl.'],
+['fieldset','b','Agrupa campos de formulário','<fieldset>\n  <legend>Dados</legend>\n  <label>Nome <input></label>\n</fieldset>','Agrupar campos relacionados, como morada ou opções de pagamento.','disabled, name','O primeiro filho deve ser legend; disabled desativa todos os campos dentro.'],
+['figcaption','b','Legenda de figura','<figure>\n  <img src="{{IMG}}" alt="Forma">\n  <figcaption>Fig. 1: uma imagem SVG</figcaption>\n</figure>','Legenda de um figure.','—','Tem de ser o primeiro ou o último filho de figure.'],
+['figure','b','Imagem ou bloco com legenda','<figure>\n  <img src="{{IMG}}" alt="Forma">\n  <figcaption>Fig. 1</figcaption>\n</figure>','Imagens, diagramas, código ou gráficos com legenda.','—','Pode ser movido para o fim do documento sem afetar o sentido do texto.'],
+['footer','b','Rodapé','<footer style="border-top:2px solid #888;padding-top:8px">© 2026 O Meu Site</footer>','Rodapé da página ou de uma secção: autor, direitos, links.','—','Podes ter vários footer: um por página e outros dentro de section ou article.'],
+['form','b','Formulário','<form onsubmit="return false">\n  <label>Email <input type="email"></label>\n  <button>Enviar</button>\n</form>','Recolher dados do utilizador e enviá-los.','action, method, autocomplete, novalidate','Sem action, o envio recarrega a mesma página.'],
+['h1-h6','b','Títulos de nível 1 a 6','<h1>Título 1</h1>\n<h2>Título 2</h2>\n<h3>Título 3</h3>\n<h4>Título 4</h4>\n<h5>Título 5</h5>\n<h6>Título 6</h6>','Estruturar o conteúdo em hierarquia.','—','Um h1 por página e sem saltar níveis: ajuda leitores de ecrã e SEO.'],
+['header','b','Cabeçalho','<header style="background:#ddd;padding:10px;color:#000">\n  <h2>O Meu Site</h2>\n</header>','Introdução da página ou secção: logótipo, título, navegação.','—','Não é o mesmo que head, que fica fora do body.'],
+['hr','b','Linha horizontal','<p>Antes</p>\n<hr>\n<p>Depois</p>','Separar mudanças de tema dentro do conteúdo.','—','É uma pausa temática, não só decoração; para decorar usa CSS.'],
+['li','b','Item de lista','<ul>\n  <li>Primeiro</li>\n  <li>Segundo</li>\n</ul>','Cada item de ul, ol ou menu.','value (em ol)','Só deve estar dentro de uma lista.'],
+['main','b','Conteúdo principal','<main style="border:2px solid teal;padding:10px">\n  <p>O conteúdo central da página.</p>\n</main>','O conteúdo central e único da página.','—','Só um main visível por página; não dentro de header, footer, nav ou aside.'],
+['nav','b','Navegação','<nav>\n  <a href="#">Início</a> |\n  <a href="#">Sobre</a> |\n  <a href="#">Contacto</a>\n</nav>','Blocos principais de links de navegação.','aria-label','Não uses em todos os grupos de links, só nos principais.'],
+['noscript','b','Alternativa sem JavaScript','<noscript>Ativa o JavaScript!</noscript>\n<p>Se vês isto sem aviso, o JS está ativo (desativa-o para ver o aviso).</p>','Mostrar conteúdo alternativo quando o JavaScript está desativado.','—','Só é visível se o JavaScript estiver desligado.'],
+['ol','b','Lista ordenada','<ol type="A">\n  <li>Café</li>\n  <li>Chá</li>\n  <li>Leite</li>\n</ol>','Passos, rankings, qualquer lista em que a ordem importa.','type, start, reversed','Para listas sem ordem usa ul.'],
+['p','b','Parágrafo','<p>Hello World</p>\n<p>Cada parágrafo começa numa nova linha e tem margem.</p>','Blocos de texto corrido.','—','Não uses br para criar espaço entre parágrafos; usa margens em CSS.'],
+['pre','b','Texto pré-formatado','<pre>\n  /\\_/\\\n ( o.o )\n  > ^ <\n</pre>','Texto em que espaços e quebras de linha contam: ASCII art, código.','—','Para código, combina com code: pre > code.'],
+['section','b','Secção temática','<section style="border-left:4px solid orange;padding-left:10px">\n  <h3>Secção</h3>\n  <p>Um grupo de conteúdo relacionado.</p>\n</section>','Agrupar conteúdo de um mesmo tema, normalmente com título.','—','Se não tiver título, provavelmente deve ser um div.'],
+['table','b','Tabela','<table border="1" cellpadding="6">\n  <tr><th>Nome</th><th>Idade</th></tr>\n  <tr><td>Ana</td><td>30</td></tr>\n</table>','Dados tabulares, nunca para fazer layout.','colspan, rowspan (em td/th); scope (em th)','Os atributos border e cellpadding são antigos; prefere CSS. Usa caption e th.'],
+['tfoot','b','Rodapé de tabela','<table border="1" cellpadding="6">\n  <tr><td>Maçã</td><td>2 €</td></tr>\n  <tr><td>Pera</td><td>3 €</td></tr>\n  <tfoot><tr><td>Total</td><td>5 €</td></tr></tfoot>\n</table>','Linhas de resumo: totais, médias.','—','Faz parte do trio thead, tbody e tfoot.'],
+['ul','b','Lista não ordenada','<ul style="list-style:square">\n  <li>Café</li>\n  <li>Chá</li>\n</ul>','Itens sem ordem: menus, características.','—','O estilo dos marcadores muda-se com CSS (list-style).'],
+['video','b','Vídeo (adiciona um src teu)','<video controls width="300" style="background:#000">\n  <!-- <source src="video.mp4" type="video/mp4"> -->\n  O teu navegador não suporta vídeo.\n</video>','Incorporar vídeo sem plugins.','controls, src, poster, loop, muted, autoplay, preload','autoplay só funciona de forma fiável com muted.'],
+['a','i','Hiperligação','<p>Visita o <a href="https://www.w3schools.com" target="_blank">W3Schools</a>.</p>','Links para páginas, ficheiros, âncoras ou emails.','href, target, rel, download','Com target="_blank" junta rel="noopener" por segurança.'],
+['abbr','i','Abreviatura','<p>O <abbr title="HyperText Markup Language">HTML</abbr> é fixe. Passa o rato.</p>','Abreviaturas e siglas com o significado completo.','title','O title aparece ao passar o rato.'],
+['acronym','i','Sigla (obsoleta, usa abbr)','<p>A <acronym title="World Health Organization">WHO</acronym> foi fundada em 1948.</p>','Era usada para siglas.','title','Não existe no HTML5: usa abbr.'],
+['b','i','Negrito sem ênfase','<p>Isto é <b>negrito</b> no meio do texto.</p>','Chamar a atenção visualmente sem dar importância extra.','—','Para importância real usa strong.'],
+['bdo','i','Sentido do texto','<p><bdo dir="rtl">Este texto vai da direita para a esquerda</bdo></p>','Forçar a direção do texto.','dir (ltr ou rtl)','Útil com árabe e hebraico.'],
+['big','i','Texto maior (obsoleta)','<p>Texto <big>maior</big> que o normal.</p>','Aumentava o tamanho do texto.','—','Não existe no HTML5: usa CSS (font-size).'],
+['br','i','Quebra de linha','<p>Linha um<br>Linha dois<br>Linha três</p>','Quebras que fazem parte do conteúdo: poemas, moradas.','—','Não uses para espaçamento de layout.'],
+['button','i','Botão','<button onclick="this.textContent=\'Clicado!\'">Clica-me</button>','Ações: enviar, abrir menus, executar código.','type, disabled, name, value','Dentro de um form o tipo por omissão é submit; define type="button" se não queres enviar.'],
+['cite','i','Título de uma obra','<p>Li <cite>Os Lusíadas</cite> na escola.</p>','Título de livro, filme, artigo ou outra obra.','—','Por especificação é o título da obra, não o nome da pessoa.'],
+['code','i','Código','<p>Usa <code>console.log("olá")</code> para depurar.</p>','Excertos de código no meio do texto.','—','Para blocos de várias linhas usa pre > code.'],
+['dfn','i','Termo definido','<p>Um <dfn>elemento inline</dfn> só ocupa a largura necessária.</p>','A primeira vez que um termo é definido no texto.','title','Costuma aparecer em itálico.'],
+['em','i','Ênfase (itálico)','<p>Isto é <em>mesmo</em> importante.</p>','Ênfase que muda o sentido da frase.','—','Leitores de ecrã alteram a entoação; para só itálico visual usa i ou CSS.'],
+['i','i','Itálico','<p>O nome científico é <i>Homo sapiens</i>.</p>','Termos técnicos, nomes científicos, pensamentos, outra língua.','lang','Sem ênfase especial; para ênfase usa em.'],
+['img','i','Imagem','<p>Texto <img src="{{IMG}}" alt="Forma" height="40"> com imagem inline.</p>','Mostrar imagens.','src, alt, width, height, loading="lazy"','Escreve sempre alt; se for decorativa usa alt="" (vazio).'],
+['input','i','Campo de entrada','<p><input type="text" placeholder="Escreve aqui">\n<input type="color" value="#d85a30">\n<input type="range"></p>','Recolher dados: texto, email, número, data, cor, ficheiro e mais.','type, name, value, placeholder, required, min, max','Não leva tag de fecho. O placeholder não substitui um label.'],
+['kbd','i','Tecla do teclado','<p>Prime <kbd>Ctrl</kbd> + <kbd>S</kbd> para guardar.</p>','Teclas ou atalhos que o utilizador deve premir.','—','Para a saída de um programa usa samp.'],
+['label','i','Etiqueta de campo','<label for="n">Nome:</label>\n<input id="n">\n<p>Clicar na etiqueta foca o campo.</p>','Dar nome a um campo de formulário.','for (id do campo)','Melhora a acessibilidade e aumenta a área clicável. Também podes envolver o input.'],
+['map','i','Mapa de imagem clicável','<img src="{{IMG}}" usemap="#m" alt="Forma">\n<map name="m">\n  <area shape="circle" coords="70,35,22" href="#" alt="Círculo" onclick="alert(\'Círculo!\');return false">\n</map>','Zonas clicáveis numa imagem, definidas com area.','name','O usemap da imagem aponta para o name com #.'],
+['object','i','Recurso incorporado','<object data="{{IMG}}" type="image/svg+xml" width="140" height="70">Sem suporte</object>','Incorporar PDF, SVG ou outro recurso externo.','data, type, width, height','Hoje costuma preferir-se img, video ou iframe.'],
+['output','i','Resultado de um cálculo','<form oninput="r.value=+a.value+ +b.value" onsubmit="return false">\n  <input type="number" id="a" value="2"> +\n  <input type="number" id="b" value="3"> =\n  <output name="r" for="a b">5</output>\n</form>','Mostrar o resultado de um cálculo ou ação do utilizador.','for, name, form','Anunciado por leitores de ecrã quando muda.'],
+['q','i','Citação curta','<p>Ela disse: <q>Olá, mundo!</q></p>','Citação curta dentro de uma frase.','cite','O navegador põe as aspas sozinho; não as escrevas.'],
+['samp','i','Saída de programa','<p>O programa escreveu <samp>Erro 404</samp>.</p>','Mensagem ou resultado produzido por um programa.','—','Aparece em fonte monoespaçada.'],
+['script','i','JavaScript','<p id="o">Original</p>\n<script>\ndocument.getElementById("o").textContent="Alterado pelo script às "+new Date().toLocaleTimeString();\n<\/script>','Incluir ou carregar JavaScript.','src, defer, async, type="module"','Usa defer para não bloquear a página enquanto carrega.'],
+['select','i','Lista pendente','<select>\n  <option>Porto</option>\n  <option>Lisboa</option>\n  <option>Faro</option>\n</select>','Escolher uma ou várias opções de uma lista.','name, multiple, required, size','As opções vão em option; agrupa com optgroup.'],
+['small','i','Texto pequeno','<p>Preço: 9 € <small>(IVA incluído)</small></p>','Letras miúdas, avisos legais, direitos de autor.','—','Não o uses só para reduzir o tamanho; para isso usa CSS.'],
+['span','i','Contentor genérico inline','<p>Os olhos da mãe são <span style="color:blue;font-weight:bold">azuis</span> e os do pai são <span style="color:darkolivegreen;font-weight:bold">verde-escuros</span>.</p>','Estilizar ou marcar um pedaço de texto.','class, id, style','Sem significado próprio, como o div mas inline.'],
+['strong','i','Importância forte','<p><strong>Atenção:</strong> isto é importante.</p>','Texto importante, urgente ou de aviso.','—','Aparece a negrito, mas a razão é o significado.'],
+['sub','i','Subscrito','<p>A água é H<sub>2</sub>O.</p>','Fórmulas químicas, índices matemáticos.','—','Desce o texto e reduz o tamanho.'],
+['sup','i','Sobrescrito','<p>E = mc<sup>2</sup></p>','Expoentes, ordinais, notas de rodapé.','—','Sobe o texto e reduz o tamanho.'],
+['textarea','i','Caixa de texto','<textarea rows="4" cols="30">Escreve várias linhas…</textarea>','Texto de várias linhas, como comentários.','rows, cols, name, maxlength, placeholder','Ao contrário de input, tem tag de fecho.'],
+['time','i','Data ou hora','<p>Vemo-nos às <time datetime="18:30">18h30</time> de <time datetime="2026-10-19">19 de outubro</time>.</p>','Datas e horas legíveis por máquinas.','datetime','O valor de datetime segue o formato ISO (2026-10-19).'],
+['tt','i','Máquina de escrever (obsoleta)','<p>Texto <tt>monoespaçado</tt> antigo.</p>','Texto monoespaçado.','—','Não existe no HTML5: usa code, kbd ou samp.'],
+['var','i','Variável','<p>A área é <var>a</var> × <var>b</var>.</p>','Variáveis em fórmulas ou programação.','—','Costuma aparecer em itálico.']
+];
+var OB={acronym:1,big:1,tt:1};
+var cur=-1,filt="",qs="",seen={};
+var $=function(i){return document.getElementById(i)};
+var esc=function(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")};
+try{seen=JSON.parse(localStorage.getItem("labtags")||"{}")}catch(e){seen={}}
+function save(){try{localStorage.setItem("labtags",JSON.stringify(seen))}catch(e){}}
+function code(i){return D[i][3].split("{{IMG}}").join(IMG)}
+function list(){
+  var h="";
+  D.forEach(function(d,i){
+    if(filt&&d[1]!==filt)return;
+    if(qs&&d[0].indexOf(qs)<0)return;
+    h+='<button class="chip '+d[1]+(seen[d[0]]?" seen":"")+(i===cur?" cur":"")+'" data-i="'+i+'">&lt;'+d[0]+'&gt;</button>';
+  });
+  $("list").innerHTML=h||"<span class='note'>Nenhuma tag encontrada.</span>";
+  var n=Object.keys(seen).length;
+  $("bar").style.width=(n/D.length*100)+"%";
+  $("prog").textContent=n+" de "+D.length+" tags exploradas";
+}
+function run(){
+  var c=$("dbg").checked?' class="dbg"':"";
+  $("pv").srcdoc='<!doctype html><meta charset="utf-8"><style>body{font:15px system-ui,sans-serif;margin:12px;color:#222;background:#fff}.dbg *{outline:1px dashed #d85a30;outline-offset:-1px}</style><body'+c+'>'+$("ed").value;
+}
+function pick(i){
+  cur=i;var d=D[i];
+  $("tn").textContent="<"+d[0]+">";
+  $("tb").textContent=d[1]==="b"?"Bloco":"Inline";
+  $("tb").className="badge "+d[1];
+  $("to").hidden=!OB[d[0]];
+  $("td").textContent=d[2];
+  $("ed").value=code(i);
+  var cards=[["Quando usar",d[4]],["Atributos úteis",d[5]],["Dica",d[6]],["Comportamento",d[1]==="b"?"Começa numa nova linha e ocupa toda a largura.":"Fica na linha e ocupa só a largura necessária."]];
+  $("inf").innerHTML=cards.map(function(c){return '<div class="card"><b>'+c[0]+'</b><span>'+esc(c[1])+'</span></div>'}).join("");
+  var t=d[0]==="h1-h6"?"h1":d[0];
+  $("nt").innerHTML=(d[1]==="b"?"Elemento de bloco: pode conter outros blocos e elementos inline.":"Elemento inline: não pode conter elementos de bloco.")+' <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/'+t+'" target="_blank" rel="noopener">Ver &lt;'+t+'&gt; na MDN ↗</a>';
+  seen[d[0]]=1;save();list();run();
+}
+$("list").addEventListener("click",function(e){var b=e.target.closest("[data-i]");if(b)pick(+b.dataset.i)});
+document.querySelectorAll(".f").forEach(function(b){b.onclick=function(){
+  document.querySelectorAll(".f").forEach(function(x){x.classList.remove("on")});
+  b.classList.add("on");filt=b.dataset.k;list();
+}});
+$("q").oninput=function(){qs=this.value.toLowerCase().replace(/[<>]/g,"");list()};
+var t;$("ed").oninput=function(){clearTimeout(t);t=setTimeout(run,250)};
+$("dbg").onchange=run;
+$("rs").onclick=function(){$("ed").value=code(cur);run()};
+$("nx").onclick=function(){pick(Math.floor(Math.random()*D.length))};
+var rt;$("rp").onclick=function(){
+  var b=this;
+  if(!b.dataset.ask){b.dataset.ask=1;b.textContent="Tens a certeza? Clica de novo";rt=setTimeout(function(){delete b.dataset.ask;b.textContent="↺ Resetar exploradas"},3000);return}
+  clearTimeout(rt);delete b.dataset.ask;b.textContent="↺ Resetar exploradas";
+  seen={};save();list();
+};
+pick(D.findIndex(function(d){return d[0]==="div"}));
+</script>
+</body>
+</html>
